@@ -38,7 +38,6 @@ def test_create_classroom():
 
     # The classroom needs to be a dictionary identical to the expected
     assert classroom == expected
-
     # The classroom needs to be created with
     # empty lists for students and assignments
     assert classroom["student_list"] == []
