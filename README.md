@@ -1,5 +1,5 @@
 markbook.py for half complete GUI version  
-original_markbook.py for text version
+original_markbook.py for original text version
 
 # Markbook Assignment
 The goal is to review certain Python concepts as well as pick up some new ones along the way. The assignment will be done in scrum groups of approx. 5 people.
