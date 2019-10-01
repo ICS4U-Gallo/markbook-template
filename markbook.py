@@ -109,8 +109,10 @@ def add_student_to_classroom(student, classroom):
 
     first_name = student["first_name"]
     last_name = student["last_name"]
+    name = f"{first_name} {last_name}"
 
-    classroom["student_list"].append(f"{first_name} {last_name}")
+    classroom["student_list"].append(name)
+    classroom["student_marks"][name] = None
     student["classes"][classroom["course_code"]] = None
 
 
@@ -123,8 +125,10 @@ def remove_student_from_classroom(student: Dict, classroom: Dict):
     """
     first_name = student["first_name"]
     last_name = student["last_name"]
+    name = f"{first_name} {last_name}"
 
-    classroom["student_list"].remove(f"{first_name} {last_name}")
+    classroom["student_list"].remove(name)
+    del classroom["student_marks"][name]
     del student["classes"][classroom["course_code"]]
 
 
@@ -362,7 +366,7 @@ while True:
                     elif selection == 0:
                         while True:
                             student = input("Please enter the student's"
-                                            " first and last name)\n")
+                                            " first and last name\n")
                             if student in data["student_List"]:
                                 break
 
@@ -600,43 +604,65 @@ while True:
                                                 break
 
                                     elif selection == 7:
-                                        chg_f_name = changes_dict["first_name"]
-                                        chg_l_name = changes_dict["last_name"]
-                                        new_name = f"{chg_f_name} {chg_l_name}"
-                                        if (new_name) != student:
-                                            for classroom in data["student_Info"][student]["classes"].keys():
-                                                student_list = data["classroom_Info"][classroom]["student_list"]
-                                                student_list.append(new_name)
-                                                student_list.remove(student)
-                                                student_marks = data["classroom_Info"][classroom]["student_marks"]
-                                                for name in student_marks.keys():
-                                                    if name == student:
-                                                        student_marks[new_name] = student_marks[name]
-                                                        del student_marks[name]
-                                        edit_student(data["student_Info"]
-                                                     [student], **changes_dict)
-                                        for key, value in (data["student_Info"]
-                                                           [student]).items():
-                                            print(key, value)
+                                        if changes_dict != data["student_Info"][student]:
+                                            chg_f_name = changes_dict["first_name"]
+                                            chg_l_name = changes_dict["last_name"]
+                                            new_name = f"{chg_f_name} {chg_l_name}"
+                                            if new_name != student and len(data["student_Info"][student]["classes"]) != 0:
+                                                for classroom in data["student_Info"][student]["classes"].keys():
+                                                    student_list = data["classroom_Info"][classroom]["student_list"]
+                                                    student_list.append(new_name)
+                                                    student_list.remove(student)
+                                                    student_marks = data["classroom_Info"][classroom]["student_marks"]
+                                                    student_marks[new_name] = student_marks[student]
+                                                    del student_marks[student]
+                                            edit_student(data["student_Info"][student], **changes_dict)
+                                            data["student_List"].append(new_name)
+                                            data["student_List"].remove(student)
+                                            data["student_Info"][new_name] = data["student_Info"][student].copy()
+                                            del data["student_Info"][student]
+
+                                        for key, value in data["student_Info"][student].items():
+                                            if key == "first_name":
+                                                print(f"First name: {value}")
+                                            elif key == "last_name":
+                                                print(f"Last name: {value}")
+                                            elif key == "gender":
+                                                print(f"Gender: {value}")
+                                            elif key == "image":
+                                                print(f"Image: {value}")
+                                            elif key == "student_number":
+                                                print(f"Student number: {value}")
+                                            elif key == "grade":
+                                                print(f"Grade: {value}")
+                                            elif key == "email":
+                                                print(f"Email: {value}")
+                                            elif key == "classes":
+                                                if value == {}:
+                                                    print("Classes: None")
+                                                else:
+                                                    print(f"Classes: {value}")
                                         input("Press enter when you're done "
                                               "viewing.")
 
                                     elif selection == 8:
-                                        chg_f_name = changes_dict["first_name"]
-                                        chg_l_name = changes_dict["last_name"]
-                                        new_name = f"{chg_f_name} {chg_l_name}"
-                                        if (new_name) != student:
-                                            for classroom in data["student_Info"][student]["classes"].keys():
-                                                student_list = data["classroom_Info"][classroom]["student_list"]
-                                                student_list.append(new_name)
-                                                student_list.remove(student)
-                                                student_marks = data["classroom_Info"][classroom]["student_marks"]
-                                                for name in student_marks.keys():
-                                                    if name == student:
-                                                        student_marks[new_name] = student_marks[name]
-                                                        del student_marks[name]
-                                        edit_student(data["student_Info"]
-                                                     [student], **changes_dict)
+                                        if changes_dict != data["student_Info"][student]:
+                                            chg_f_name = changes_dict["first_name"]
+                                            chg_l_name = changes_dict["last_name"]
+                                            new_name = f"{chg_f_name} {chg_l_name}"
+                                            if new_name != student and len(data["student_Info"][student]["classes"]) != 0:
+                                                for classroom in data["student_Info"][student]["classes"].keys():
+                                                    student_list = data["classroom_Info"][classroom]["student_list"]
+                                                    student_list.append(new_name)
+                                                    student_list.remove(student)
+                                                    student_marks = data["classroom_Info"][classroom]["student_marks"]
+                                                    student_marks[new_name] = student_marks[student]
+                                                    del student_marks[student]
+                                            edit_student(data["student_Info"][student], **changes_dict)
+                                            data["student_List"].append(new_name)
+                                            data["student_List"].remove(student)
+                                            data["student_Info"][new_name] = data["student_Info"][student].copy()
+                                            del data["student_Info"][student]
                                         break
                         else:
                             print("\nThere are currently no registered "
@@ -783,7 +809,25 @@ while True:
                                 student = input("Please enter student's first and last name.\n")
                                 if student in (data["student_List"]):
                                     for key, value in data["student_Info"][student].items():
-                                        print(f"{key}: {value}")
+                                        if key == "first_name":
+                                            print(f"First name: {value}")
+                                        elif key == "last_name":
+                                            print(f"Last name: {value}")
+                                        elif key == "gender":
+                                            print(f"Gender: {value}")
+                                        elif key == "image":
+                                            print(f"Image: {value}")
+                                        elif key == "student_number":
+                                            print(f"Student number: {value}")
+                                        elif key == "grade":
+                                            print(f"Grade: {value}")
+                                        elif key == "email":
+                                            print(f"Email: {value}")
+                                        elif key == "classes":
+                                            if value == {}:
+                                                print("Classes: None")
+                                            else:
+                                                print(f"Classes: {value}")
                                     input("Press enter when you're done viewing.")
                                     break
                                 else:
@@ -798,10 +842,32 @@ while True:
                                                         "you like to choose"
                                                         "? (Please enter "
                                                         "the class code)\n")
-                                if selected_class in (data
-                                                        ["classroom_List"]):
+                                if selected_class in data["classroom_List"]:
                                     for key, value in data["classroom_Info"][selected_class].items():
-                                        print(f"{key}: {value}")
+                                        if key == "course_code":
+                                            print(f"Course code: {value}")
+                                        elif key == "course_name":
+                                            print(f"Course name: {value}")
+                                        elif key == "period":
+                                            print(f"Period: {value}")
+                                        elif key == "teacher":
+                                            print(f"Teacher: {value}")
+                                        elif key == "student_list":
+                                            if value == {}:
+                                                print("Student list: None")
+                                            else:
+                                                print(f"Student list: {value}")
+                                        elif key == "assignment_list":
+                                            if value == {}:
+                                                print("Assignment list: None")
+                                            else:
+                                                print(f"Assignment list: {value}")
+                                        elif key == "student_marks":
+                                            if value == {}:
+                                                print("Student marks: None")
+                                            else:
+                                                print(f"Student mark: {value}")
+
                                     input("Press enter when you're done viewing.")
                                     break
                                 else:
