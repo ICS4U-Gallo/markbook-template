@@ -1,13 +1,25 @@
 import pytest
-
 import markbook
 
 
-@pytest.mark.skip
+def test_create_student():
+
+    expected = {
+        "first_name": "test_name",
+        "last_name": "test_name",
+        "assignment_list": []
+    }
+
+    student = markbook.create_student("test_name", "test_name")
+
+    assert expected == student
+
+
 def test_create_assigment():
     assignment1 = markbook.create_assignment(name="Assignment One",
                                             due="2019-09-21",
                                             points=100)
+
     expected = {
         "name": "Assignment One",
         "due": "2019-09-21",
@@ -16,8 +28,8 @@ def test_create_assigment():
     assert assignment1 == expected
 
     assignment2 = markbook.create_assignment(name="Assignment Two",
-                                             due=None,
-                                             points=1)
+                                        due=None,
+                                        points=1)
     assert assignment2["name"] == "Assignment Two"
     assert assignment2["due"] is None
     assert assignment2["points"] == 1
@@ -45,15 +57,22 @@ def test_create_classroom():
     assert classroom["assignment_list"] == []
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_calculate_average_mark():
     student = {
-        "marks": [50, 100]
+        "assignment_list": [{"name": "markbook", "points": 25}]
     }
-    assert markbook.calculate_average_mark(student) == 75.0
+
+    assignments = [
+        {'name': "markbook", "points": 50}
+    ]
+
+    classroom = {"assignment_list": assignments}
+
+    assert markbook.calculate_average_mark(student, classroom) == .5
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_add_student_to_classroom():
     """
     Dependencies:
@@ -71,7 +90,7 @@ def test_add_student_to_classroom():
     assert len(classroom["student_list"]) == 1
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_remove_student_from_classroom():
     """
     Dependencies:
@@ -91,7 +110,7 @@ def test_remove_student_from_classroom():
     assert len(classroom["student_list"]) == 0
 
 
-@pytest.mark.skip
+# @pytest.mark.skip
 def test_edit_student():
     student = {"first_name": "John", "last_name": "Smith", "grade": 10}
     markbook.edit_student(student, first_name="Frank", last_name="Bell")
