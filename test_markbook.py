@@ -1,9 +1,43 @@
 import pytest
-
 import markbook
 
+course = markbook.course("Comp Sci", "ICS4U1", "2", "Gallo")
+student = markbook.student("Eric", "Jeng", 1036010)
 
-@pytest.mark.skip
+
+def test_create_student():
+    assert isinstance(student, markbook.student)
+    assert student.first == "Eric"
+    assert student.last == "Jeng"
+    assert student.stu_num == 1036010
+
+
+def test_create_course():
+    assert isinstance(course, markbook.course)
+    assert course.name == "Comp Sci"
+    assert course.code == "ICS4U1"
+    assert course.period == "2"
+    assert course.teacher == "Gallo"
+
+
+def test_create_assignment():
+    assignment = markbook.assignment("Markbook", "Oct. 2, 2019", 40,
+                                     course.code)
+    assert isinstance(assignment, markbook.assignment)
+    assert assignment.name == "MARKBOOK"
+    assert assignment.due == "Oct. 2, 2019"
+    assert assignment.point == 40
+    assert assignment.course == "ICS4U1"
+
+
+def test_add_student_to_course():
+    course.add_student(student)
+    assert len(course.students_list) == 1
+    assert len(student.course_list) == 1
+
+
+'''
+@pytest.mark.skip()
 def test_create_assigment():
     assignment1 = markbook.create_assignment(name="Assignment One",
                                             due="2019-09-21",
@@ -98,3 +132,4 @@ def test_edit_student():
     assert student["first_name"] == "Frank"
     assert student["last_name"] == "Bell"
     assert student["grade"] == 10
+'''
