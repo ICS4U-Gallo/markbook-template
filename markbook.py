@@ -15,17 +15,27 @@ def create_assignment(name: str, due: str, points: int) -> Dict:
     Returns:
         Assignment as a dictionary.
     """
-    return {}
+    return {"name": name, "due": due, "points": points}
 
 
 def create_classroom(course_code: str, course_name: str, period: int, teacher: str) -> Dict:
     """Creates a classroom dictionary"""
-    return {}
+    return {
+        "course_code": course_code,
+        "course_name": course_name,
+        "period": period,
+        "teacher": teacher,
+        "student_list": [],
+        "assignment_list": []
+    }
 
 
 def calculate_average_mark(student: Dict) -> float:
     """Calculates the average mark of a student"""
-    return 0
+    total = 0
+    for mark in student["marks"]:
+        total += mark
+    return total / len(student["marks"])
 
 
 def add_student_to_classroom(student, classroom):
@@ -35,7 +45,7 @@ def add_student_to_classroom(student, classroom):
         student: Student dict
         classroom: The classroom to add the student to
     """
-    pass
+    classroom["student_list"].append(student)
 
 
 def remove_student_from_classroom(student: Dict, classroom: Dict):
@@ -45,7 +55,7 @@ def remove_student_from_classroom(student: Dict, classroom: Dict):
         student: The student to be removed
         classroom: the class from which the student will be removed.
     """
-    pass
+    classroom["student_list"].remove(student)
 
 
 def edit_student(student: Dict, **kwargs: Dict):
@@ -57,4 +67,5 @@ def edit_student(student: Dict, **kwargs: Dict):
             data that needs to be changed. Can come in the form
             of a dictionary.
     """
-    pass
+    for key, value in kwargs.items():
+        student[key] = value
