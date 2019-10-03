@@ -29,16 +29,11 @@ def test_create_classroom():
                                           course_name="Computer Science",
                                           period=2,
                                           teacher="Mr. Gallo")
-    expected = {
-        "course_code": "ICS4U",
-        "course_name": "Computer Science",
-        "period": 2,
-        "teacher": "Mr. Gallo"
-    }
 
-    # The classroom needs to be a dictionary identical to the expected
-    assert classroom == expected
-
+    assert classroom["course_code"] == "ICS4U"
+    assert classroom["course_name"] == "Computer Science
+    assert classroom["period"] == 2
+    assert classroom["teacher"] == "Mr. Gallo"
     # The classroom needs to be created with
     # empty lists for students and assignments
     assert classroom["student_list"] == []
