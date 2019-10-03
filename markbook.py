@@ -37,9 +37,9 @@ def menu_create_classroom():
     period = get_valid_int_input("Period: ")
     teacher = input("Teacher: ")
     new_classroom = create_classroom(course_code,
-                                        course_name,
-                                        period,
-                                        teacher)
+                                     course_name,
+                                     period,
+                                     teacher)
     classrooms.append(new_classroom)
 
 
@@ -50,11 +50,11 @@ def menu_list_classrooms():
     print("{:>15}{:>15}{:>15}".format("Course", "Code", "Teacher"))
     for room in classrooms:
         print("{:>15}{:>15}{:>15}".format(room["course_name"],
-                                            room["course_code"],
-                                            room["teacher"]))
+                                          room["course_code"],
+                                          room["teacher"]))
 
 
-def get_valid_int_input(msg: str) -> str:
+def get_valid_int_input(msg: str) -> int:
     while True:
         try:
             value = int(input(msg))
