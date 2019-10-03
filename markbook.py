@@ -5,6 +5,65 @@ Group members:
 from typing import Dict
 
 
+classrooms = []
+
+def main():
+    while True:
+        print()
+        print("Markbook")
+        print("========")
+        print("[1] Create classroom.")
+        print("[2] List classrooms.")
+        print("[0] Exit")
+
+        choice = get_valid_int_input("Select a menu option: ")
+
+        if choice == 1:
+            menu_create_classroom()
+        elif choice == 2:
+            menu_list_classrooms()
+        elif choice == 0:
+            exit()
+        else:
+            print("Invalid menu option.")
+
+
+def menu_create_classroom():
+    print()
+    print("Create Classroom")
+    print("----------------")
+    course_code = input("Course code: ")
+    course_name = input("Course name: ")
+    period = get_valid_int_input("Period: ")
+    teacher = input("Teacher: ")
+    new_classroom = create_classroom(course_code,
+                                        course_name,
+                                        period,
+                                        teacher)
+    classrooms.append(new_classroom)
+
+
+def menu_list_classrooms():
+    print()
+    print("Classrooms")
+    print("----------")
+    print("{:>15}{:>15}{:>15}".format("Course", "Code", "Teacher"))
+    for room in classrooms:
+        print("{:>15}{:>15}{:>15}".format(room["course_name"],
+                                            room["course_code"],
+                                            room["teacher"]))
+
+
+def get_valid_int_input(msg: str) -> str:
+    while True:
+        try:
+            value = int(input(msg))
+        except ValueError:
+            print("Invalid. Please enter a number.")
+        else:
+            return value
+
+
 def create_assignment(name: str, due: str, points: int) -> Dict:
     """Creates an assignment represented as a dictionary
     
@@ -69,3 +128,7 @@ def edit_student(student: Dict, **kwargs: Dict):
     """
     for key, value in kwargs.items():
         student[key] = value
+
+
+if __name__ == "__main__":
+    main()
