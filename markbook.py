@@ -28,7 +28,7 @@ def calculate_average_mark(student: Dict) -> float:
     return 0
 
 
-def add_student_to_classroom(student, classroom):
+def add_student_to_classroom(student: Dict, classroom: Dict):
     """Adds student to a classroom
 
     Args:
