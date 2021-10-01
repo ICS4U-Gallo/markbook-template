@@ -16,14 +16,6 @@ The program will include the following topics:
 ### Accept GitHub Classroom Assignment
 Follow the github classroom link. Join your appropriate team.
 
-### Edit in Replit
-- **Important**: First make sure you are logged into replit.
-- On your team's repo, click the logo "Work in replit".
-- When you hit run the first time, it will install `pytest`. The terminal to the side is actually a terminal and not a python shell.
-- Type `pytest` in the terminal to run the tests.
-- Work on the assignment in Replit.
-- Multiplayer: Optionally, you can share your replit window with your group members and code at the same time.
-
 ### Test it out
 - In the terminal, run `pytest` and ensure it says it ran two tests.
 
